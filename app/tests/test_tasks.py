@@ -1,17 +1,35 @@
 def get_token(test_client):
-    response = test_client.post("/auth/login", json={
-        "email": "test@example.com",
-        "password": "123456"
-    })
+
+    # Create test user first
+    test_client.post(
+        "/auth/signup",
+        json={
+            "email": "test@example.com",
+            "password": "123456"
+        }
+    )
+
+    # Login
+    response = test_client.post(
+        "/auth/login",
+        json={
+            "email": "test@example.com",
+            "password": "123456"
+        }
+    )
+
     return response.json()["access_token"]
 
 
 def test_create_task(test_client):
+
     token = get_token(test_client)
 
     response = test_client.post(
         "/tasks/",
-        headers={"Authorization": f"Bearer {token}"},
+        headers={
+            "Authorization": f"Bearer {token}"
+        },
         json={
             "title": "Test Task",
             "description": "Testing"
