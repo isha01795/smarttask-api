@@ -52,6 +52,13 @@ jobs:
           pip install -r requirements.txt
           pip install httpx psycopg2-binary
 
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres123@localhost:5432/testdb
+
+        run: |
+          alembic upgrade head    
+
       - name: Run tests
         env:
           DATABASE_URL: postgresql://postgres:postgres123@localhost:5432/testdb
